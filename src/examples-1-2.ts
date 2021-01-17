@@ -7,13 +7,19 @@ import {
   VariableDeclarationKind,
 } from 'ts-morph';
 
-const fileName = 'fixtures/fixture-1.ts';
+import path from 'path';
+
+const fixtures = path.resolve(__dirname, '../fixtures');
+const dist = path.resolve(__dirname, '../dist');
+const filename = 'fixture-1.ts';
 
 run();
 
 function run() {
   const project = new Project();
-  const sourceFile = project.addSourceFileAtPath(fileName);
+  const sourceFile = project.addSourceFileAtPath(
+    path.resolve(fixtures, filename)
+  );
   const func = sourceFile.getFunction('foo')!; // https://ts-morph.com/details/functions
   const declaration = findDeclaration(func);
 
@@ -41,7 +47,10 @@ function run() {
   });
   declaration.setInitializer(`{${bar.name}}`);
 
-  console.log('--- print ---', '\n' + sourceFile.print());
+  // console.log('--- print ---', '\n' + sourceFile.print());
+  sourceFile.copyImmediatelySync(path.resolve(dist, filename), {
+    overwrite: true,
+  });
 }
 
 // Find VariableDeclaration that use a FunctionDeclaration

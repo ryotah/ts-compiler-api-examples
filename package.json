@@ -9,6 +9,9 @@
   },
   "keywords": [],
   "author": "",
+  "nodemonConfig": {
+    "ignore": ["dist/*"]
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^14.14.14",
